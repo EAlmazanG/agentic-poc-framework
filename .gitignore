@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+
+# Node
+node_modules/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+
+# Env
+.env
+.env.*
+!.env.example
+
+# OS / Editor
+.DS_Store
+.vscode/
+.idea/
+
+# Build and temp
+*.log
+*.pid
+alembic/versions/*.pyc
+apps/api/htmlcov/
+apps/web/.turbo/

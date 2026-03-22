@@ -1,0 +1,13 @@
+services:
+  api:
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+
+  web:
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+
+  db:
+    restart: unless-stopped

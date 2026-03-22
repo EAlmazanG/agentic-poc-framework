@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install uv
+        run: pip install uv
+      - name: Sync API dependencies
+        working-directory: apps/api
+        run: uv sync
+      - name: API lint
+        working-directory: apps/api
+        run: uv run ruff check src tests
+      - name: API typecheck
+        working-directory: apps/api
+        run: uv run mypy src
+      - name: API tests
+        working-directory: apps/api
+        run: uv run pytest tests
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install web dependencies
+        run: npm install --prefix apps/web
+      - name: Web lint
+        run: npm run --prefix apps/web lint
+      - name: Web typecheck
+        run: npm run --prefix apps/web typecheck
+      - name: Web tests
+        run: npm run --prefix apps/web test -- --runInBand

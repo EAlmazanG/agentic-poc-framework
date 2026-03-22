@@ -1,0 +1,20 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.0
+    hooks:
+      - id: ruff-check
+        args: ["--fix", "apps/api"]
+      - id: ruff-format
+        args: ["apps/api"]
+  - repo: local
+    hooks:
+      - id: web-lint
+        name: web-lint
+        entry: make web-lint
+        language: system
+        pass_filenames: false
+      - id: web-typecheck
+        name: web-typecheck
+        entry: make web-typecheck
+        language: system
+        pass_filenames: false
