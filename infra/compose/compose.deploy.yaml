@@ -1,9 +1,15 @@
 services:
   api:
+    init: true
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
 
   web:
+    init: true
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
 
   db:
     restart: unless-stopped
@@ -20,5 +26,7 @@ services:
     ports:
       - "80:80"
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     networks:
       - app_network

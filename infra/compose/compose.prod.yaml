@@ -1,11 +1,17 @@
 services:
   api:
+    init: true
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     ports:
       - "8000:8000"
 
   web:
+    init: true
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     ports:
       - "3001:3000"
 

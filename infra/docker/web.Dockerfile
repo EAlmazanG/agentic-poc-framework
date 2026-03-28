@@ -15,8 +15,11 @@ RUN npm run build
 FROM node:20-alpine AS runner
 WORKDIR /workspace/apps/web
 ENV NODE_ENV=production
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 COPY --from=builder /workspace/apps/web/.next/standalone ./
 COPY --from=builder /workspace/apps/web/.next/static ./.next/static
 COPY --from=builder /workspace/apps/web/public ./public
+RUN chown -R appuser:appgroup /workspace/apps/web
+USER appuser
 EXPOSE 3000
 CMD ["node", "server.js"]

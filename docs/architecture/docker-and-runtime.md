@@ -17,10 +17,18 @@
 
 - `infra/docker/api.Dockerfile` has explicit `dev` and `runtime` stages
 - `infra/docker/web.Dockerfile` has explicit `dev`, `builder`, and `runner` stages
+- Production runtime stages run as non-root users
+
+## Runtime hardening baseline
+
+- Production-oriented services use `no-new-privileges`
+- API and web runtime images run as non-root users
+- Trusted hosts and browser-exposed envs must be reviewed before deployment
+- Security headers are applied by both API and web defaults
 
 ## Rules
 
 - Keep image build concerns in Dockerfiles.
 - Keep environment intent in Compose overlays.
 - Avoid installing dependencies in runtime commands.
-- If runtime topology changes, update this file and the deployment runbooks.
+- If runtime topology changes, update this file, `SECURITY.md`, and the deployment runbooks.

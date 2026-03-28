@@ -10,12 +10,12 @@ A reusable full-stack template for fast proof-of-concept projects built with a P
 - Root `Makefile` as the canonical command surface
 - Linting, typing, tests, CI, and contribution guardrails
 - Root and local `AGENTS.md` files
-- Architecture docs, runbooks, and ADRs
+- Architecture docs, runbooks, ADRs, and a security baseline
 
 ## Operating model
 
-- Humans start from `README.md` and `docs/`
-- Agents start from `AGENTS.md` and then read the nearest local `AGENTS.md`
+- Humans start from `README.md`, `SECURITY.md`, and `docs/`
+- Agents start from `AGENTS.md`, then the nearest local `AGENTS.md`, then the relevant docs
 - Significant structural decisions live in `docs/adr/`
 - All common workflows should be reachable through root `make` targets
 
@@ -66,6 +66,7 @@ make ci
 ├── .github/
 ├── AGENTS.md
 ├── CONTRIBUTING.md
+├── SECURITY.md
 ├── Makefile
 └── .env.example
 ```
@@ -82,6 +83,7 @@ make ci
 - Frontend shared integration/config helpers go in `apps/web/src/lib`
 - Durable explanation goes in `docs/architecture`
 - Operational procedures go in `docs/runbooks`
+- Security baseline and review rules go in `SECURITY.md`
 
 ## Intentional empty folders
 
@@ -100,10 +102,12 @@ They exist to show where future code belongs when the project grows, not to forc
 - Backend architecture: `docs/architecture/backend.md`
 - Frontend architecture: `docs/architecture/frontend.md`
 - Docker and runtime model: `docs/architecture/docker-and-runtime.md`
+- Agent context model: `docs/architecture/agent-context-model.md`
 - Local development workflow: `docs/runbooks/local-development.md`
 - Testing workflow: `docs/runbooks/testing.md`
 - Docker deployment workflow: `docs/runbooks/docker-deployment.md`
 - Database migrations: `docs/runbooks/database-migrations.md`
+- Security baseline: `SECURITY.md`
 
 ## Agent guidance
 

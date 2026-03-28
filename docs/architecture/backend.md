@@ -13,7 +13,7 @@
 ## Baseline layout
 
 - `src/app/main.py`: application factory and router registration
-- `src/app/core`: settings and backend-wide concerns
+- `src/app/core`: settings, security middleware, and backend-wide concerns
 - `src/app/db`: DB base and session wiring
 - `src/app/modules/health`: minimal health slice
 - `src/app/modules/example`: example of the intended feature architecture
@@ -36,3 +36,4 @@ Create a new folder in `src/app/modules/<feature>` and add only the layers you a
 - Move code to `shared` only when multiple modules need the same abstraction.
 - Every behavior change should have tests.
 - Every schema change should have a migration.
+- Review trusted-host and response-header changes as security-sensitive runtime changes.

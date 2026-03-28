@@ -5,7 +5,8 @@ This repository is a reusable full-stack POC template with a Python API in `apps
 
 ## Start here
 - Read `README.md` for the repository map and bootstrap flow.
-- Read `docs/architecture/overview.md` for the system layout.
+- Read `SECURITY.md` for the repository security baseline.
+- Read `docs/architecture/agent-context-model.md` for the context-discovery model.
 - Read the nearest local `AGENTS.md` before editing code in `apps/api` or `apps/web`.
 
 ## Operating rules
@@ -18,16 +19,18 @@ This repository is a reusable full-stack POC template with a Python API in `apps
 - Never hardcode secrets.
 - Ask before adding new runtime dependencies.
 - Do not introduce new shared abstractions unless at least two real call sites need them.
+- Treat `NEXT_PUBLIC_*` values as browser-exposed and never put sensitive data there.
+- If runtime exposure changes, review `SECURITY.md` and the runtime docs before finishing.
 
 ## Change-impact rules
 - If `Makefile` changes, update `README.md`, `docs/runbooks/local-development.md`, and any affected local `AGENTS.md`.
-- If `infra/compose/*` or `infra/docker/*` changes, update `docs/architecture/docker-and-runtime.md` and `docs/runbooks/docker-deployment.md`.
-- If repository structure changes, update `docs/architecture/repository-structure.md` and add or update an ADR.
+- If `infra/compose/*` or `infra/docker/*` changes, update `docs/architecture/docker-and-runtime.md`, `docs/runbooks/docker-deployment.md`, and `SECURITY.md` if the exposure model changes.
+- If repository structure changes, update `docs/architecture/repository-structure.md`, `docs/architecture/agent-context-model.md`, and add or update an ADR.
 - If API contracts change, update backend tests and any affected frontend integration.
 - If agent workflow changes, update the relevant `AGENTS.md` files and contribution docs.
 
 ## Source of truth
-- Human-facing project truth lives in `README.md` and `docs/`.
+- Human-facing project truth lives in `README.md`, `SECURITY.md`, and `docs/`.
 - Operational agent guidance lives in `AGENTS.md` files.
 - Significant decisions live in `docs/adr/`.
 

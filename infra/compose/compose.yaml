@@ -31,6 +31,7 @@ services:
       PROJECT_NAME: ${PROJECT_NAME}
       DATABASE_URL: ${DATABASE_URL}
       API_CORS_ORIGINS: ${API_CORS_ORIGINS}
+      TRUSTED_HOSTS: ${TRUSTED_HOSTS}
     depends_on:
       db:
         condition: service_healthy
