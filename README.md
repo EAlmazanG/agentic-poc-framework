@@ -14,8 +14,8 @@ A reusable full-stack template for fast proof-of-concept projects built with a P
 
 ## Operating model
 
-- Humans start from `README.md`, `SECURITY.md`, and `docs/`
-- Agents start from `AGENTS.md`, then the nearest local `AGENTS.md`, then the relevant docs
+- Humans start from `README.md`, then `SECURITY.md` and `docs/` as needed
+- Agents start from `AGENTS.md` and read extra docs only on demand
 - Significant structural decisions live in `docs/adr/`
 - All common workflows should be reachable through root `make` targets
 
@@ -97,12 +97,10 @@ They exist to show where future code belongs when the project grows, not to forc
 
 ## Documentation index
 
-- Architecture overview: `docs/architecture/overview.md`
 - Repository structure: `docs/architecture/repository-structure.md`
 - Backend architecture: `docs/architecture/backend.md`
 - Frontend architecture: `docs/architecture/frontend.md`
 - Docker and runtime model: `docs/architecture/docker-and-runtime.md`
-- Agent context model: `docs/architecture/agent-context-model.md`
 - Local development workflow: `docs/runbooks/local-development.md`
 - Testing workflow: `docs/runbooks/testing.md`
 - Docker deployment workflow: `docs/runbooks/docker-deployment.md`
@@ -111,8 +109,8 @@ They exist to show where future code belongs when the project grows, not to forc
 
 ## Agent guidance
 
-- Global agent operating contract: `AGENTS.md`
-- Backend local guide: `apps/api/AGENTS.md`
-- Frontend local guide: `apps/web/AGENTS.md`
+Agents should use the minimal reading path:
 
-Read the nearest applicable guide before making changes.
+- Read `AGENTS.md`
+- Read one local `AGENTS.md` only if touching `apps/api` or `apps/web`
+- Read extra docs only when the task affects commands, structure, runtime, security, or deployment
