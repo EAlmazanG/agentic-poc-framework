@@ -1,13 +1,16 @@
-.PHONY: help setup env-example \
+SHELL := /bin/sh
+
+.PHONY: help doctor setup env-example hooks-install hooks-run api-sync web-sync quick-check \
 	dev-up dev-down dev-logs dev-ps dev-restart \
 	prod-up prod-down prod-logs prod-ps prod-rebuild \
 	deploy-up deploy-down deploy-logs deploy-pull deploy-rebuild \
+	compose-dev-config compose-prod-config compose-deploy-config \
 	lint format typecheck test ci \
 	api-lint api-format api-typecheck api-test api-shell api-migrate \
 	web-lint web-format web-typecheck web-test web-shell \
 	build build-api build-web build-prod db-shell db-reset logs clean
 
-COMPOSE_BASE = docker compose -f infra/compose/compose.yaml
+COMPOSE_BASE = docker compose --env-file .env -f infra/compose/compose.yaml
 COMPOSE_DEV = $(COMPOSE_BASE) -f infra/compose/compose.dev.yaml
 COMPOSE_PROD = $(COMPOSE_BASE) -f infra/compose/compose.prod.yaml
 COMPOSE_DEPLOY = $(COMPOSE_BASE) -f infra/compose/compose.deploy.yaml
@@ -15,8 +18,10 @@ COMPOSE_DEPLOY = $(COMPOSE_BASE) -f infra/compose/compose.deploy.yaml
 help:
 	@echo "Agentic POC Framework"
 	@echo ""
-	@echo "Setup"
-	@echo "  make setup              Prepare local environment"
+	@echo "Bootstrap"
+	@echo "  make doctor             Verify required local tooling"
+	@echo "  make setup              Prepare env, dependencies, and hooks"
+	@echo "  make hooks-install      Install repository git hooks via pre-commit"
 	@echo ""
 	@echo "Development"
 	@echo "  make dev-up             Start development stack"
@@ -32,22 +37,41 @@ help:
 	@echo "  make deploy-down        Stop deployment stack"
 	@echo ""
 	@echo "Quality"
+	@echo "  make quick-check        Run the fast local guardrails"
 	@echo "  make lint              Run API and web lint"
 	@echo "  make typecheck         Run API and web type checks"
 	@echo "  make test              Run API and web tests"
-	@echo "  make ci                Run core local CI parity"
+	@echo "  make ci                Run the full local validation flow"
+
+doctor:
+	@command -v uv >/dev/null 2>&1 || { echo "Missing required tool: uv"; exit 1; }
+	@command -v node >/dev/null 2>&1 || { echo "Missing required tool: node"; exit 1; }
+	@command -v npm >/dev/null 2>&1 || { echo "Missing required tool: npm"; exit 1; }
+	@command -v docker >/dev/null 2>&1 || { echo "Missing required tool: docker"; exit 1; }
+	@docker compose version >/dev/null 2>&1 || { echo "Missing required tool: docker compose"; exit 1; }
+	@echo "All required tools are available."
 
 env-example:
 	@test -f .env || cp .env.example .env
 
-setup: env-example
-	@echo "Setting up API dependencies with uv..."
-	@cd apps/api && uv sync
-	@echo "Setting up web dependencies with npm..."
-	@npm install --prefix apps/web
+api-sync:
+	@cd apps/api && uv sync --extra dev
+
+web-sync:
+	@npm ci --prefix apps/web
+
+hooks-install:
+	@uv tool run --from pre-commit pre-commit install
+
+hooks-run:
+	@uv tool run --from pre-commit pre-commit run --all-files
+
+setup: doctor env-example api-sync web-sync hooks-install
 	@echo "Setup complete. Next steps: make dev-up"
 
-dev-up:
+quick-check: api-lint web-lint web-typecheck
+
+dev-up: env-example
 	@$(COMPOSE_DEV) up --build -d
 
 dev-down:
@@ -61,7 +85,7 @@ dev-ps:
 
 dev-restart: dev-down dev-up
 
-prod-up:
+prod-up: env-example
 	@$(COMPOSE_PROD) up --build -d
 
 prod-down:
@@ -76,7 +100,7 @@ prod-ps:
 prod-rebuild:
 	@$(COMPOSE_PROD) up --build -d
 
-deploy-up:
+deploy-up: env-example
 	@$(COMPOSE_DEPLOY) up -d
 
 deploy-down:
@@ -90,6 +114,15 @@ deploy-pull:
 
 deploy-rebuild:
 	@$(COMPOSE_DEPLOY) up --build -d
+
+compose-dev-config: env-example
+	@$(COMPOSE_DEV) config
+
+compose-prod-config: env-example
+	@$(COMPOSE_PROD) config
+
+compose-deploy-config: env-example
+	@$(COMPOSE_DEPLOY) config
 
 lint: api-lint web-lint
 
@@ -146,7 +179,7 @@ build-prod:
 	@$(COMPOSE_PROD) build
 
 db-shell:
-	@$(COMPOSE_DEV) exec db psql -U $$POSTGRES_USER -d $$POSTGRES_DB
+	@$(COMPOSE_DEV) exec db /bin/sh -lc 'psql -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"'
 
 db-reset:
 	@$(COMPOSE_DEV) down -v
@@ -157,3 +190,4 @@ logs:
 
 clean:
 	@find . -type d \( -name __pycache__ -o -name .pytest_cache -o -name .mypy_cache -o -name .ruff_cache -o -name .next \) -prune -exec rm -rf {} +
+	@find . -type f \( -name '*.tsbuildinfo' -o -name '.coverage' \) -delete

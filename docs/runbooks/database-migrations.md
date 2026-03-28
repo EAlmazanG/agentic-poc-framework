@@ -17,3 +17,4 @@ make api-migrate
 
 - Every schema change must ship with a migration.
 - Migration workflow changes must update this runbook and `apps/api/AGENTS.md`.
+- Keep migration logic as an infrastructure concern, not mixed into routers or transport code.

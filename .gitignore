@@ -6,6 +6,7 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 .venv/
+.coverage
 
 # Node
 node_modules/
@@ -27,6 +28,5 @@ coverage/
 # Build and temp
 *.log
 *.pid
-alembic/versions/*.pyc
 apps/api/htmlcov/
 apps/web/.turbo/

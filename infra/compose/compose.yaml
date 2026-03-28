@@ -23,6 +23,7 @@ services:
     build:
       context: ../..
       dockerfile: infra/docker/api.Dockerfile
+      target: runtime
     env_file:
       - ../../.env
     environment:
@@ -45,6 +46,7 @@ services:
     build:
       context: ../..
       dockerfile: infra/docker/web.Dockerfile
+      target: runner
     env_file:
       - ../../.env
     environment:

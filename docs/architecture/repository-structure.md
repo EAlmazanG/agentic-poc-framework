@@ -1,12 +1,10 @@
 # Repository Structure
 
-## Chosen shape
+## Top-level shape
 
 ```text
 .
 ├── apps/
-│   ├── api/
-│   └── web/
 ├── docs/
 ├── infra/
 ├── .github/
@@ -16,13 +14,54 @@
 └── README.md
 ```
 
-## Why `apps/api` and `apps/web`
+## Top-level responsibilities
 
-This repository is a template workspace, not just a product repo. The `apps/*` structure leaves a clean path for future additions such as `apps/worker` or shared internal packages without forcing a later redesign.
+- `apps/`: runnable application code
+- `docs/`: durable explanation and runbooks
+- `infra/`: container and runtime configuration
+- `.github/`: repository automation and PR/CI policy
+- `AGENTS.md`: repository-wide agent operating contract
+- `Makefile`: single root command surface
 
-## Boundaries
+## Application structure
 
-- App code belongs inside `apps/`.
-- Runtime and container logic belongs inside `infra/`.
-- Durable explanation belongs inside `docs/`.
-- Root-level files should stay focused on entrypoints and repository-wide rules.
+### Backend
+
+```text
+apps/api/
+├── src/app/core
+├── src/app/db
+├── src/app/modules
+│   └── <feature>/
+│       ├── api
+│       ├── application
+│       ├── domain
+│       └── infrastructure
+├── src/app/shared
+└── tests
+```
+
+### Frontend
+
+```text
+apps/web/
+├── src/app
+├── src/components
+├── src/features
+├── src/lib
+└── public
+```
+
+## Rules for creating folders
+
+- Create a backend module in `apps/api/src/app/modules/<feature>` when behavior belongs to a coherent API/domain slice.
+- Create `application`, `domain`, or `infrastructure` only when the feature actually needs them.
+- Use `apps/api/src/app/shared` only for cross-module backend code.
+- Create a frontend feature folder in `apps/web/src/features/<feature>` only when UI logic stops fitting cleanly in route-level composition.
+- Keep top-level repository folders small and purpose-specific.
+
+## What not to do
+
+- Do not create generic `utils` or `helpers` folders at random locations.
+- Do not put infra logic inside app folders.
+- Do not put durable architecture explanation inside `AGENTS.md`.

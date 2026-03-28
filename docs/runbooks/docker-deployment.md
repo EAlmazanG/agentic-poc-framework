@@ -16,8 +16,15 @@ make deploy-up
 make deploy-logs
 ```
 
-## Notes
+## Meaning of each mode
 
-- `compose.prod.yaml` is for local production-style validation.
-- `compose.deploy.yaml` is the deployment-specific overlay for simple servers.
-- If runtime commands or port mappings change, update this runbook, `README.md`, and the relevant `AGENTS.md` files.
+- `prod` validates production-style images locally
+- `deploy` represents the server topology, including the proxy layer
+
+## When to update this runbook
+
+Update this file whenever:
+- `infra/compose/compose.prod.yaml` changes
+- `infra/compose/compose.deploy.yaml` changes
+- `infra/docker/*` changes in a way that affects runtime behavior
+- exposed ports or proxy behavior changes

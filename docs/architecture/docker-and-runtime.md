@@ -2,24 +2,25 @@
 
 ## Runtime modes
 
-- `dev`: local development with hot reload and mounted source code
-- `prod`: local prod-like validation with production-style images
+- `dev`: local development with hot reload
+- `prod`: local prod-like validation using production-style images
 - `deploy`: simple server deployment using Compose overlays
 
 ## Compose layering
 
-- `infra/compose/compose.yaml`: base shared services
-- `infra/compose/compose.dev.yaml`: development overrides
-- `infra/compose/compose.prod.yaml`: local prod-like validation overrides
-- `infra/compose/compose.deploy.yaml`: deployment-specific overrides
+- `infra/compose/compose.yaml`: shared base services and healthchecks
+- `infra/compose/compose.dev.yaml`: development overrides and mounts
+- `infra/compose/compose.prod.yaml`: local prod-like port exposure and restart policy
+- `infra/compose/compose.deploy.yaml`: deploy topology with proxy and server-oriented restart behavior
 
-## Service model
+## Dockerfile strategy
 
-- `db`: PostgreSQL stateful service
-- `api`: FastAPI application service
-- `web`: Next.js application service
-- `proxy`: optional deploy-layer reverse proxy
+- `infra/docker/api.Dockerfile` has explicit `dev` and `runtime` stages
+- `infra/docker/web.Dockerfile` has explicit `dev`, `builder`, and `runner` stages
 
-## Operational rule
+## Rules
 
-Keep image-specific behavior in Dockerfiles and environment-specific behavior in Compose overlays.
+- Keep image build concerns in Dockerfiles.
+- Keep environment intent in Compose overlays.
+- Avoid installing dependencies in runtime commands.
+- If runtime topology changes, update this file and the deployment runbooks.

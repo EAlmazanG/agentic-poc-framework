@@ -6,15 +6,22 @@
 2. Run `make setup`.
 3. Start the stack with `make dev-up`.
 
+## Validation flow
+
+- Fast guardrail: `make quick-check`
+- Full local validation: `make ci`
+
 ## Useful commands
 
 - `make dev-logs`
 - `make api-test`
 - `make web-test`
 - `make db-shell`
+- `make compose-dev-config`
 
-## Notes
+## When to update this runbook
 
-- The API is exposed on `http://localhost:8000`.
-- The frontend is exposed on `http://localhost:3000`.
-- PostgreSQL is exposed on `localhost:5432` in dev mode.
+Update this file whenever:
+- `Makefile` bootstrap commands change
+- dev Compose mounts or commands change
+- expected local ports or services change

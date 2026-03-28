@@ -17,7 +17,7 @@ jobs:
         run: pip install uv
       - name: Sync API dependencies
         working-directory: apps/api
-        run: uv sync
+        run: uv sync --extra dev
       - name: API lint
         working-directory: apps/api
         run: uv run ruff check src tests
@@ -36,7 +36,7 @@ jobs:
         with:
           node-version: '20'
       - name: Install web dependencies
-        run: npm install --prefix apps/web
+        run: npm ci --prefix apps/web
       - name: Web lint
         run: npm run --prefix apps/web lint
       - name: Web typecheck

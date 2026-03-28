@@ -6,19 +6,18 @@ A reusable full-stack template for fast proof-of-concept projects built with a P
 
 - FastAPI backend in `apps/api`
 - Next.js frontend in `apps/web`
-- PostgreSQL-ready runtime wiring for local development and deployment
 - Docker Compose workflows for development, prod-like validation, and simple server deployment
 - Root `Makefile` as the canonical command surface
 - Linting, typing, tests, CI, and contribution guardrails
-- `AGENTS.md` + local agent guides for consistent AI-assisted development
+- Root and local `AGENTS.md` files
 - Architecture docs, runbooks, and ADRs
 
-## What this template does not include
+## Operating model
 
-- Production auth, billing, or multi-tenant architecture
-- Background workers enabled by default
-- Cloud-provider-specific deployment logic
-- Domain-specific business logic beyond a minimal example slice
+- Humans start from `README.md` and `docs/`
+- Agents start from `AGENTS.md` and then read the nearest local `AGENTS.md`
+- Significant structural decisions live in `docs/adr/`
+- All common workflows should be reachable through root `make` targets
 
 ## Quick start
 
@@ -32,12 +31,12 @@ make dev-up
 
 ```bash
 make help
+make doctor
+make setup
 make dev-up
 make prod-up
 make deploy-up
-make lint
-make typecheck
-make test
+make quick-check
 make ci
 ```
 
@@ -47,7 +46,16 @@ make ci
 .
 ├── apps/
 │   ├── api/
+│   │   ├── src/app/core
+│   │   ├── src/app/db
+│   │   ├── src/app/modules
+│   │   ├── src/app/shared
+│   │   └── tests
 │   └── web/
+│       ├── src/app
+│       ├── src/components
+│       ├── src/features
+│       └── src/lib
 ├── docs/
 │   ├── architecture/
 │   ├── adr/
@@ -62,36 +70,45 @@ make ci
 └── .env.example
 ```
 
-## Runtime modes
+## Where to put things
 
-- `dev`: hot-reload local development with Compose overlays
-- `prod`: local prod-like validation using production-style images and commands
-- `deploy`: simple Docker Compose deployment target for a VPS or single Docker host
+- Backend settings and cross-cutting backend concerns go in `apps/api/src/app/core`
+- Backend DB wiring goes in `apps/api/src/app/db`
+- Backend feature code goes in `apps/api/src/app/modules/<feature>`
+- Backend reusable but non-domain-specific helpers go in `apps/api/src/app/shared`
+- Frontend routes and layouts go in `apps/web/src/app`
+- Frontend reusable UI goes in `apps/web/src/components`
+- Frontend feature-specific code goes in `apps/web/src/features/<feature>`
+- Frontend shared integration/config helpers go in `apps/web/src/lib`
+- Durable explanation goes in `docs/architecture`
+- Operational procedures go in `docs/runbooks`
 
-## Extension points
+## Intentional empty folders
 
-- Add a worker later as `apps/worker`
-- Add shared internal packages later if the repo grows
-- Keep runtime and process decisions in `docs/adr/`
-- Keep operational workflows in `docs/runbooks/`
+Some folders may stay almost empty in the template on purpose:
+
+- `apps/api/src/app/shared`
+- `apps/api/src/app/modules/example/infrastructure`
+- `apps/web/src/features`
+
+They exist to show where future code belongs when the project grows, not to force premature abstractions.
 
 ## Documentation index
 
 - Architecture overview: `docs/architecture/overview.md`
 - Repository structure: `docs/architecture/repository-structure.md`
+- Backend architecture: `docs/architecture/backend.md`
+- Frontend architecture: `docs/architecture/frontend.md`
 - Docker and runtime model: `docs/architecture/docker-and-runtime.md`
 - Local development workflow: `docs/runbooks/local-development.md`
 - Testing workflow: `docs/runbooks/testing.md`
 - Docker deployment workflow: `docs/runbooks/docker-deployment.md`
-- Agent operating contract: `AGENTS.md`
+- Database migrations: `docs/runbooks/database-migrations.md`
 
 ## Agent guidance
 
-This repository uses a canonical agent-instruction model:
+- Global agent operating contract: `AGENTS.md`
+- Backend local guide: `apps/api/AGENTS.md`
+- Frontend local guide: `apps/web/AGENTS.md`
 
-- Root `AGENTS.md` for global operational rules
-- `apps/api/AGENTS.md` for backend-specific rules
-- `apps/web/AGENTS.md` for frontend-specific rules
-- Optional thin adapters for agent-specific tools
-
-If you are using an AI coding assistant, start with `AGENTS.md` before making changes.
+Read the nearest applicable guide before making changes.

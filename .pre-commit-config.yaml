@@ -1,20 +1,29 @@
 repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.0
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
     hooks:
-      - id: ruff-check
-        args: ["--fix", "apps/api"]
-      - id: ruff-format
-        args: ["apps/api"]
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
   - repo: local
     hooks:
+      - id: api-lint
+        name: api-lint
+        entry: make api-lint
+        language: system
+        pass_filenames: false
+      - id: api-format
+        name: api-format
+        entry: make api-format
+        language: system
+        pass_filenames: false
+      - id: api-typecheck
+        name: api-typecheck
+        entry: make api-typecheck
+        language: system
+        pass_filenames: false
       - id: web-lint
         name: web-lint
         entry: make web-lint
-        language: system
-        pass_filenames: false
-      - id: web-typecheck
-        name: web-typecheck
-        entry: make web-typecheck
         language: system
         pass_filenames: false
