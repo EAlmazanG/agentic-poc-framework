@@ -1,4 +1,6 @@
-# Agentic POC Framework
+<div align="center">
+  <h1> Agentic PoC Framework</h1>
+</div>
 
 <p align="center">
   A reusable full-stack template for fast proof-of-concept projects with a Python API, a Next.js frontend, Docker-first workflows, and a multi-agent collaboration model.
