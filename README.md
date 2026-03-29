@@ -177,6 +177,7 @@ Agents should use the minimal reading path:
 - Read `AGENTS.md`
 - Read one local `AGENTS.md` only if touching `apps/api` or `apps/web`
 - Read extra docs only when the task affects commands, structure, runtime, security, or deployment
+- Use `.windsurf/workflows/project-bootstrap.md` when adapting the template to a new project description
 
 ## Local guides
 

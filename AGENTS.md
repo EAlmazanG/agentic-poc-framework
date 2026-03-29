@@ -15,6 +15,7 @@ Read additional files only when the task touches their area.
 - `apps/web/AGENTS.md` when editing frontend code or frontend tests
 
 ### Read extra docs only when the task requires them
+- `.windsurf/workflows/project-bootstrap.md` when adapting this template to a new POC from a project description
 - `docs/change-impact.json` if you need the canonical change-to-docs-and-checks map
 - `SECURITY.md` if secrets, runtime exposure, headers, CORS, trusted hosts, proxying, auth, or browser-exposed env vars change
 - `docs/architecture/docker-and-runtime.md` if `infra/compose/*`, `infra/docker/*`, or runtime behavior changes
@@ -56,6 +57,7 @@ Read additional files only when the task touches their area.
 - Significant decisions live in `docs/adr/`.
 
 ## Validation shortcuts
+- Project adaptation workflow: `.windsurf/workflows/project-bootstrap.md`
 - Fast repo guardrail: `make docs-check`
 - Suggested docs/checks for current changes: `make docs-suggest`
 - Fast code guardrail: `make quick-check`
