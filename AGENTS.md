@@ -15,6 +15,7 @@ Read additional files only when the task touches their area.
 - `apps/web/AGENTS.md` when editing frontend code or frontend tests
 
 ### Read extra docs only when the task requires them
+- `docs/change-impact.json` if you need the canonical change-to-docs-and-checks map
 - `SECURITY.md` if secrets, runtime exposure, headers, CORS, trusted hosts, proxying, auth, or browser-exposed env vars change
 - `docs/architecture/docker-and-runtime.md` if `infra/compose/*`, `infra/docker/*`, or runtime behavior changes
 - `docs/architecture/repository-structure.md` if folders, module boundaries, or repo layout change
@@ -24,18 +25,16 @@ Read additional files only when the task touches their area.
 - `docs/adr/*` only if the task changes an important recorded decision
 - `README.md` mainly for humans or when updating onboarding/project overview
 
-## Impact matrix
-- `commands/workflow` -> touch `README.md`, `docs/runbooks/local-development.md`, affected `AGENTS.md` -> run `make docs-check` and the relevant app checks
-- `runtime/security/deploy` -> touch `SECURITY.md`, `docs/architecture/docker-and-runtime.md`, env examples, affected `AGENTS.md` -> run `make docs-check` and `make ci`
-- `repo structure` -> touch relevant architecture docs and an ADR when the decision is significant -> run `make docs-check` and affected app checks
-- `api contract` -> touch backend router/schemas/tests and affected frontend integration/tests -> run affected app checks, usually `make api-test`, `make web-test`, and typechecks
-- `data model/schema` -> add migration, update DB code/tests, review migration/runtime docs if workflow changed -> run `make api-test` and migration-related validation
-- `agent workflow` -> touch `AGENTS.md`, affected local guides, and `CONTRIBUTING.md` -> run `make docs-check`
+## Structured change routing
+- Canonical machine-readable change map: `docs/change-impact.json`
+- Use it when deciding which docs, context files, and checks a change should touch.
+- `make docs-check` validates that the manifest stays aligned with the repo.
 
-## Cross-app change map
-- `api contract` -> update backend transport code and tests, update frontend integration and tests, then run backend and frontend checks
-- `auth or shared runtime config` -> review backend settings, frontend integration points, browser-exposed env usage, and `SECURITY.md`
-- `browser-exposed envs` -> review `NEXT_PUBLIC_*` usage, frontend integration points, and `SECURITY.md` before finishing
+## Common cross-app changes
+- `api_contract`
+- `auth_shared_runtime_config`
+- `browser_exposed_envs`
+- Use the matching entry in `docs/change-impact.json` before finishing.
 
 ## Operating rules
 - Prefer root `make` targets instead of ad-hoc commands.

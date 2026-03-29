@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "change_types": {
+    "commands_workflow": {
+      "review_context": [
+        "AGENTS.md",
+        "apps/api/AGENTS.md",
+        "apps/web/AGENTS.md"
+      ],
+      "update_docs": [
+        "README.md",
+        "docs/runbooks/local-development.md"
+      ],
+      "run_checks": [
+        "docs-check"
+      ]
+    },
+    "runtime_security_deploy": {
+      "review_context": [
+        "AGENTS.md",
+        "SECURITY.md"
+      ],
+      "update_docs": [
+        "SECURITY.md",
+        "docs/architecture/docker-and-runtime.md",
+        ".env.example"
+      ],
+      "run_checks": [
+        "docs-check",
+        "ci"
+      ]
+    },
+    "repo_structure": {
+      "review_context": [
+        "AGENTS.md"
+      ],
+      "update_docs": [
+        "docs/architecture/repository-structure.md",
+        "docs/adr"
+      ],
+      "run_checks": [
+        "docs-check"
+      ]
+    },
+    "api_contract": {
+      "review_context": [
+        "apps/api/AGENTS.md",
+        "apps/web/AGENTS.md"
+      ],
+      "update_docs": [],
+      "run_checks": [
+        "api-typecheck",
+        "api-test",
+        "web-typecheck",
+        "web-test"
+      ]
+    },
+    "data_model_schema": {
+      "review_context": [
+        "apps/api/AGENTS.md",
+        "docs/runbooks/database-migrations.md"
+      ],
+      "update_docs": [
+        "docs/runbooks/database-migrations.md"
+      ],
+      "run_checks": [
+        "api-test",
+        "docs-check"
+      ]
+    },
+    "agent_workflow": {
+      "review_context": [
+        "AGENTS.md",
+        "CONTRIBUTING.md"
+      ],
+      "update_docs": [
+        "AGENTS.md",
+        "apps/api/AGENTS.md",
+        "apps/web/AGENTS.md",
+        "CONTRIBUTING.md"
+      ],
+      "run_checks": [
+        "docs-check"
+      ]
+    },
+    "auth_shared_runtime_config": {
+      "scope": "cross_app",
+      "review_context": [
+        "apps/api/AGENTS.md",
+        "apps/web/AGENTS.md",
+        "SECURITY.md"
+      ],
+      "update_docs": [
+        "SECURITY.md",
+        "docs/architecture/docker-and-runtime.md"
+      ],
+      "run_checks": [
+        "api-typecheck",
+        "api-test",
+        "web-typecheck",
+        "web-test",
+        "docs-check"
+      ]
+    },
+    "browser_exposed_envs": {
+      "scope": "cross_app",
+      "review_context": [
+        "apps/web/AGENTS.md",
+        "SECURITY.md"
+      ],
+      "update_docs": [
+        "SECURITY.md",
+        ".env.example"
+      ],
+      "run_checks": [
+        "web-typecheck",
+        "web-test",
+        "docs-check"
+      ]
+    }
+  }
+}

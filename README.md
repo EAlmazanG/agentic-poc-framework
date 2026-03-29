@@ -72,7 +72,7 @@ make dev-up
 | Development | `make dev-up` | Start the development stack |
 | Prod-like | `make prod-up` | Start the prod-like local stack |
 | Deployment | `make deploy-up` | Start the deployment stack |
-| Docs guardrail | `make docs-check` | Verify documented commands and doc references |
+| Docs guardrail | `make docs-check` | Verify documented commands, doc references, and change-impact alignment |
 | Fast validation | `make quick-check` | Run the fast local guardrails |
 | Full validation | `make ci` | Run the full local validation flow |
 
@@ -164,6 +164,7 @@ They exist to show where future code should go when the project grows, not to fo
 
 - Security baseline: `SECURITY.md`
 - Contribution guide: `CONTRIBUTING.md`
+- Change impact manifest: `docs/change-impact.json`
 - Architecture decisions: `docs/adr/`
 
 ---
