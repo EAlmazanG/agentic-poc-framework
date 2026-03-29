@@ -9,11 +9,13 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 MAKEFILE_PATH = REPO_ROOT / "Makefile"
 CHANGE_IMPACT_PATH = REPO_ROOT / "docs/change-impact.json"
 
-ROOT_DOC_FILES = [
+DOC_REFERENCE_FILES = [
     REPO_ROOT / "README.md",
     REPO_ROOT / "AGENTS.md",
     REPO_ROOT / "apps/api/AGENTS.md",
     REPO_ROOT / "apps/web/AGENTS.md",
+    REPO_ROOT / "CONTRIBUTING.md",
+    REPO_ROOT / "SECURITY.md",
 ]
 
 ROOT_COMMANDS = [
@@ -24,6 +26,7 @@ ROOT_COMMANDS = [
     "prod-up",
     "deploy-up",
     "docs-check",
+    "docs-suggest",
     "quick-check",
     "ci",
 ]
@@ -82,7 +85,7 @@ def ensure_documented_commands_exist(make_targets: set[str]) -> list[str]:
 def ensure_markdown_references_exist() -> list[str]:
     errors: list[str] = []
 
-    for file_path in ROOT_DOC_FILES:
+    for file_path in DOC_REFERENCE_FILES:
         content = file_path.read_text()
         for ref in MARKDOWN_REFERENCE_PATTERN.findall(content):
             if ref.endswith("/*"):
@@ -125,6 +128,7 @@ def ensure_change_impact_manifest(make_targets: set[str]) -> list[str]:
             continue
 
         for key in ("review_context", "update_docs", "run_checks"):
+
             value = payload.get(key)
             if not isinstance(value, list):
                 errors.append(f"change_types.{change_name}.{key} must be an array")
@@ -143,6 +147,15 @@ def ensure_change_impact_manifest(make_targets: set[str]) -> list[str]:
                 candidate = REPO_ROOT / item
                 if not candidate.exists():
                     errors.append(f"change_types.{change_name}.{key} references missing path: {item}")
+
+        match_paths = payload.get("match_paths")
+        if match_paths is not None:
+            if not isinstance(match_paths, list):
+                errors.append(f"change_types.{change_name}.match_paths must be an array")
+            else:
+                for item in match_paths:
+                    if not isinstance(item, str) or not item:
+                        errors.append(f"change_types.{change_name}.match_paths contains an invalid value")
 
     return errors
 

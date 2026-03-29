@@ -1,6 +1,6 @@
 SHELL := /bin/sh
 
-.PHONY: help doctor setup env-example hooks-install hooks-run api-sync web-sync docs-check quick-check \
+.PHONY: help doctor setup env-example hooks-install hooks-run api-sync web-sync docs-check docs-suggest quick-check \
 	dev-up dev-down dev-logs dev-ps dev-restart \
 	prod-up prod-down prod-logs prod-ps prod-rebuild \
 	deploy-up deploy-down deploy-logs deploy-pull deploy-rebuild \
@@ -37,7 +37,8 @@ help:
 	@echo "  make deploy-down        Stop deployment stack"
 	@echo ""
 	@echo "Quality"
-	@echo "  make docs-check        Verify documented root commands stay aligned"
+	@echo "  make docs-check        Verify documented commands, docs, and manifest alignment"
+	@echo "  make docs-suggest      Suggest docs, context, and checks for changed files"
 	@echo "  make quick-check       Run the fast local guardrails"
 	@echo "  make lint              Run API and web lint"
 	@echo "  make typecheck         Run API and web type checks"
@@ -72,6 +73,9 @@ setup: doctor env-example api-sync web-sync hooks-install
 
 docs-check:
 	@python3 scripts/docs_check.py
+
+docs-suggest:
+	@python3 scripts/docs_suggest.py $(FILES)
 
 quick-check: docs-check api-lint web-lint web-typecheck
 

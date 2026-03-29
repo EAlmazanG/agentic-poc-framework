@@ -29,6 +29,7 @@ Read additional files only when the task touches their area.
 - Canonical machine-readable change map: `docs/change-impact.json`
 - Use it when deciding which docs, context files, and checks a change should touch.
 - `make docs-check` validates that the manifest stays aligned with the repo.
+- `make docs-suggest` prints likely docs, context files, and checks for the current changed files.
 
 ## Common cross-app changes
 - `api_contract`
@@ -56,5 +57,6 @@ Read additional files only when the task touches their area.
 
 ## Validation shortcuts
 - Fast repo guardrail: `make docs-check`
+- Suggested docs/checks for current changes: `make docs-suggest`
 - Fast code guardrail: `make quick-check`
 - Full local validation: `make ci`

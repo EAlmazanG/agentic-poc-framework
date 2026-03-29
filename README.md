@@ -73,6 +73,7 @@ make dev-up
 | Prod-like | `make prod-up` | Start the prod-like local stack |
 | Deployment | `make deploy-up` | Start the deployment stack |
 | Docs guardrail | `make docs-check` | Verify documented commands, doc references, and change-impact alignment |
+| Docs suggestion | `make docs-suggest` | Suggest docs, context files, and checks for the current changes |
 | Fast validation | `make quick-check` | Run the fast local guardrails |
 | Full validation | `make ci` | Run the full local validation flow |
 
@@ -187,5 +188,12 @@ Agents should use the minimal reading path:
 ## Validation flow
 
 - **Documentation guardrail**: `make docs-check`
+- **Context-aware suggestion**: `make docs-suggest`
 - **Fast code guardrail**: `make quick-check`
 - **Full local validation**: `make ci`
+
+## Documentation automation model
+
+- `docs/change-impact.json` is the canonical machine-readable map for change routing.
+- `make docs-check` validates command/docs/manifest consistency.
+- `make docs-suggest` consumes that manifest and suggests what to review, update, and run for the current file changes.

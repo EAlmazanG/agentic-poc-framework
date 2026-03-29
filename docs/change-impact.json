@@ -2,6 +2,13 @@
   "version": 1,
   "change_types": {
     "commands_workflow": {
+      "match_paths": [
+        "Makefile",
+        "README.md",
+        "docs/runbooks/local-development.md",
+        ".pre-commit-config.yaml",
+        ".github/workflows/*.yml"
+      ],
       "review_context": [
         "AGENTS.md",
         "apps/api/AGENTS.md",
@@ -16,6 +23,15 @@
       ]
     },
     "runtime_security_deploy": {
+      "match_paths": [
+        ".env.example",
+        "infra/compose/*.yaml",
+        "infra/docker/*",
+        "apps/api/src/app/core/settings.py",
+        "apps/api/src/app/core/http.py",
+        "apps/api/src/app/main.py",
+        "apps/web/next.config.js"
+      ],
       "review_context": [
         "AGENTS.md",
         "SECURITY.md"
@@ -31,6 +47,11 @@
       ]
     },
     "repo_structure": {
+      "match_paths": [
+        "apps",
+        "apps/**",
+        "docs/architecture/repository-structure.md"
+      ],
       "review_context": [
         "AGENTS.md"
       ],
@@ -43,6 +64,15 @@
       ]
     },
     "api_contract": {
+      "match_paths": [
+        "apps/api/src/app/modules/**/api/*.py",
+        "apps/api/src/app/modules/**/application/*.py",
+        "apps/api/tests/**/*.py",
+        "apps/web/src/lib/**/*",
+        "apps/web/src/app/**/*",
+        "apps/web/src/components/**/*",
+        "apps/web/src/features/**/*"
+      ],
       "review_context": [
         "apps/api/AGENTS.md",
         "apps/web/AGENTS.md"
@@ -56,6 +86,12 @@
       ]
     },
     "data_model_schema": {
+      "match_paths": [
+        "apps/api/migrations/**/*",
+        "apps/api/src/app/db/**/*",
+        "apps/api/src/app/modules/**/infrastructure/*.py",
+        "docs/runbooks/database-migrations.md"
+      ],
       "review_context": [
         "apps/api/AGENTS.md",
         "docs/runbooks/database-migrations.md"
@@ -69,6 +105,15 @@
       ]
     },
     "agent_workflow": {
+      "match_paths": [
+        "AGENTS.md",
+        "apps/api/AGENTS.md",
+        "apps/web/AGENTS.md",
+        "CONTRIBUTING.md",
+        "docs/change-impact.json",
+        "scripts/docs_check.py",
+        "scripts/docs_suggest.py"
+      ],
       "review_context": [
         "AGENTS.md",
         "CONTRIBUTING.md"
@@ -85,6 +130,13 @@
     },
     "auth_shared_runtime_config": {
       "scope": "cross_app",
+      "match_paths": [
+        ".env.example",
+        "apps/api/src/app/core/settings.py",
+        "apps/api/src/app/main.py",
+        "apps/web/src/lib/**/*",
+        "apps/web/src/app/**/*"
+      ],
       "review_context": [
         "apps/api/AGENTS.md",
         "apps/web/AGENTS.md",
@@ -104,6 +156,12 @@
     },
     "browser_exposed_envs": {
       "scope": "cross_app",
+      "match_paths": [
+        ".env.example",
+        "apps/web/src/lib/**/*",
+        "apps/web/src/app/**/*",
+        "apps/web/next.config.js"
+      ],
       "review_context": [
         "apps/web/AGENTS.md",
         "SECURITY.md"
