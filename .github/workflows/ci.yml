@@ -9,6 +9,13 @@ permissions:
   contents: read
 
 jobs:
+  repo-guardrails:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Documentation guardrails
+        run: make docs-check
+
   api:
     runs-on: ubuntu-latest
     steps:

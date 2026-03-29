@@ -27,6 +27,19 @@ Read this file only when touching `apps/api` code or backend tests.
 - Add a migration for schema changes.
 - Do not move code to `shared` until multiple modules need it.
 
+## How to trace a backend change
+- API entrypoint: start from `src/app/main.py`, then the router under `src/app/modules/<feature>/api`
+- Request and response shape: check transport schemas in `api`
+- Behavior: continue into `application`
+- Core business rules: continue into `domain`
+- Persistence or external IO: continue into `infrastructure` or `src/app/db`
+- Verification: finish in `tests`, preferably matching the module boundary
+
+## Typical backend change map
+- API contract change: update router/schemas, backend tests, and any affected frontend integration
+- Data model change: add migration, update DB-related code, and update tests
+- Runtime/env change: update settings, runtime docs, and `SECURITY.md` if exposure changes
+
 ## Read extra docs only when needed
 - `docs/architecture/backend.md` if module boundaries or backend architecture change
 - `docs/architecture/docker-and-runtime.md` if backend runtime/env behavior changes

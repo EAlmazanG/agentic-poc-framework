@@ -24,12 +24,18 @@ Read additional files only when the task touches their area.
 - `docs/adr/*` only if the task changes an important recorded decision
 - `README.md` mainly for humans or when updating onboarding/project overview
 
-## Task routing
-- Command or workflow change: update `README.md`, relevant runbooks, and affected `AGENTS.md`
-- Runtime or security change: update `SECURITY.md`, runtime docs, env examples, and affected `AGENTS.md`
-- Structure change: update architecture docs and an ADR when the decision is significant
-- API contract change: update backend tests and any affected frontend integration
-- Agent workflow change: update `AGENTS.md`, affected local guides, and `CONTRIBUTING.md`
+## Impact matrix
+- `commands/workflow` -> touch `README.md`, `docs/runbooks/local-development.md`, affected `AGENTS.md` -> run `make docs-check` and the relevant app checks
+- `runtime/security/deploy` -> touch `SECURITY.md`, `docs/architecture/docker-and-runtime.md`, env examples, affected `AGENTS.md` -> run `make docs-check` and `make ci`
+- `repo structure` -> touch relevant architecture docs and an ADR when the decision is significant -> run `make docs-check` and affected app checks
+- `api contract` -> touch backend router/schemas/tests and affected frontend integration/tests -> run affected app checks, usually `make api-test`, `make web-test`, and typechecks
+- `data model/schema` -> add migration, update DB code/tests, review migration/runtime docs if workflow changed -> run `make api-test` and migration-related validation
+- `agent workflow` -> touch `AGENTS.md`, affected local guides, and `CONTRIBUTING.md` -> run `make docs-check`
+
+## Cross-app change map
+- `api contract` -> update backend transport code and tests, update frontend integration and tests, then run backend and frontend checks
+- `auth or shared runtime config` -> review backend settings, frontend integration points, browser-exposed env usage, and `SECURITY.md`
+- `browser-exposed envs` -> review `NEXT_PUBLIC_*` usage, frontend integration points, and `SECURITY.md` before finishing
 
 ## Operating rules
 - Prefer root `make` targets instead of ad-hoc commands.
@@ -48,3 +54,8 @@ Read additional files only when the task touches their area.
 - Human-facing project truth lives in `README.md`, `SECURITY.md`, and `docs/`.
 - Operational agent guidance lives in `AGENTS.md` files.
 - Significant decisions live in `docs/adr/`.
+
+## Validation shortcuts
+- Fast repo guardrail: `make docs-check`
+- Fast code guardrail: `make quick-check`
+- Full local validation: `make ci`

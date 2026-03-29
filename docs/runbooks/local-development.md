@@ -8,7 +8,8 @@
 
 ## Validation flow
 
-- Fast guardrail: `make quick-check`
+- Documentation guardrail: `make docs-check`
+- Fast code guardrail: `make quick-check`
 - Full local validation: `make ci`
 
 ## Useful commands

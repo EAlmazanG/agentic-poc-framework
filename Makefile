@@ -1,6 +1,6 @@
 SHELL := /bin/sh
 
-.PHONY: help doctor setup env-example hooks-install hooks-run api-sync web-sync quick-check \
+.PHONY: help doctor setup env-example hooks-install hooks-run api-sync web-sync docs-check quick-check \
 	dev-up dev-down dev-logs dev-ps dev-restart \
 	prod-up prod-down prod-logs prod-ps prod-rebuild \
 	deploy-up deploy-down deploy-logs deploy-pull deploy-rebuild \
@@ -37,7 +37,8 @@ help:
 	@echo "  make deploy-down        Stop deployment stack"
 	@echo ""
 	@echo "Quality"
-	@echo "  make quick-check        Run the fast local guardrails"
+	@echo "  make docs-check        Verify documented root commands stay aligned"
+	@echo "  make quick-check       Run the fast local guardrails"
 	@echo "  make lint              Run API and web lint"
 	@echo "  make typecheck         Run API and web type checks"
 	@echo "  make test              Run API and web tests"
@@ -69,7 +70,23 @@ hooks-run:
 setup: doctor env-example api-sync web-sync hooks-install
 	@echo "Setup complete. Next steps: make dev-up"
 
-quick-check: api-lint web-lint web-typecheck
+docs-check:
+	@for target in help doctor setup dev-up prod-up deploy-up docs-check quick-check ci; do \
+		grep -q "^$$target:" Makefile || { echo "Missing Makefile target: $$target"; exit 1; }; \
+		grep -Fq "make $$target" README.md || { echo "README.md is missing documented command: make $$target"; exit 1; }; \
+	done
+	@for target in api-lint api-format api-typecheck api-test api-migrate; do \
+		grep -q "^$$target:" Makefile || { echo "Missing Makefile target: $$target"; exit 1; }; \
+		grep -Fq "make $$target" apps/api/AGENTS.md || { echo "apps/api/AGENTS.md is missing documented command: make $$target"; exit 1; }; \
+	done
+	@for target in web-lint web-format web-typecheck web-test; do \
+		grep -q "^$$target:" Makefile || { echo "Missing Makefile target: $$target"; exit 1; }; \
+		grep -Fq "make $$target" apps/web/AGENTS.md || { echo "apps/web/AGENTS.md is missing documented command: make $$target"; exit 1; }; \
+	done
+	@python3 -c 'from pathlib import Path; import re, sys; files=[Path("README.md"), Path("AGENTS.md"), Path("apps/api/AGENTS.md"), Path("apps/web/AGENTS.md")]; pattern=re.compile(r"`([^`]+\\.md(?:/[^`]*)?)`"); repo_root=Path("."); missing=[(str(file_path), ref) for file_path in files for ref in pattern.findall(file_path.read_text()) if not ((((repo_root / ref[:-2]).exists() and (repo_root / ref[:-2]).is_dir()) if ref.endswith("/*") else (repo_root / ref).exists()))]; [print(f"Missing referenced doc in {source}: {ref}") for source, ref in missing]; sys.exit(1 if missing else 0)'
+	@echo "Documentation guardrails passed."
+
+quick-check: docs-check api-lint web-lint web-typecheck
 
 dev-up: env-example
 	@$(COMPOSE_DEV) up --build -d
@@ -132,7 +149,7 @@ typecheck: api-typecheck web-typecheck
 
 test: api-test web-test
 
-ci: lint typecheck test
+ci: docs-check lint typecheck test
 
 api-lint:
 	@cd apps/api && uv run ruff check src tests

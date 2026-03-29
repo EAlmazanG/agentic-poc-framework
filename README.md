@@ -36,6 +36,7 @@ make setup
 make dev-up
 make prod-up
 make deploy-up
+make docs-check
 make quick-check
 make ci
 ```
