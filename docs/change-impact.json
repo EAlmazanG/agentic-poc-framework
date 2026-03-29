@@ -48,9 +48,10 @@
     },
     "repo_structure": {
       "match_paths": [
-        "apps",
-        "apps/**",
-        "docs/architecture/repository-structure.md"
+        "docs/architecture/repository-structure.md",
+        "AGENTS.md",
+        "apps/api/AGENTS.md",
+        "apps/web/AGENTS.md"
       ],
       "review_context": [
         "AGENTS.md"
@@ -66,12 +67,8 @@
     "api_contract": {
       "match_paths": [
         "apps/api/src/app/modules/**/api/*.py",
-        "apps/api/src/app/modules/**/application/*.py",
-        "apps/api/tests/**/*.py",
-        "apps/web/src/lib/**/*",
-        "apps/web/src/app/**/*",
-        "apps/web/src/components/**/*",
-        "apps/web/src/features/**/*"
+        "apps/api/src/app/modules/**/api/**/*.py",
+        "apps/web/src/lib/**/*"
       ],
       "review_context": [
         "apps/api/AGENTS.md",
@@ -134,8 +131,7 @@
         ".env.example",
         "apps/api/src/app/core/settings.py",
         "apps/api/src/app/main.py",
-        "apps/web/src/lib/**/*",
-        "apps/web/src/app/**/*"
+        "apps/web/src/lib/**/*"
       ],
       "review_context": [
         "apps/api/AGENTS.md",
@@ -159,7 +155,6 @@
       "match_paths": [
         ".env.example",
         "apps/web/src/lib/**/*",
-        "apps/web/src/app/**/*",
         "apps/web/next.config.js"
       ],
       "review_context": [

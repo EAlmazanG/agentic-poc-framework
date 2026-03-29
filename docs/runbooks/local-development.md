@@ -9,6 +9,7 @@
 ## Validation flow
 
 - Documentation guardrail: `make docs-check`
+- Context-aware suggestion when commands/docs/runtime change: `make docs-suggest`
 - Fast code guardrail: `make quick-check`
 - Full local validation: `make ci`
 
